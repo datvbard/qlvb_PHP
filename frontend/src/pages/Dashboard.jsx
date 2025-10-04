@@ -239,10 +239,10 @@ const Dashboard = ({ user, onLogout }) => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-burgundy-100 text-sm font-medium mb-1">TỔNG VĂN BẢN</p>
-                  <p className="text-4xl font-bold">{stats.total}</p>
+                  <p className="text-white/90 text-sm font-medium mb-1">TỔNG VĂN BẢN</p>
+                  <p className="text-4xl font-bold text-white">{stats.total}</p>
                 </div>
-                <FileText className="w-12 h-12 text-burgundy-200" />
+                <FileText className="w-12 h-12 text-white/80" />
               </div>
             </CardContent>
           </Card>
