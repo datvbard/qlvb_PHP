@@ -11,7 +11,7 @@ from typing import List, Optional
 import uuid
 from datetime import datetime, timezone, timedelta, date
 import jwt
-from passlib.context import CryptContext
+import bcrypt
 import io
 import pandas as pd
 from fastapi.responses import StreamingResponse
