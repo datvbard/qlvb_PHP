@@ -3,7 +3,10 @@ import '@/App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import LoginPage from '@/pages/LoginPage';
-import Dashboard from '@/pages/Dashboard';
+import DashboardNew from '@/pages/DashboardNew';
+import AdminCategories from '@/pages/AdminCategories';
+import AdminMenu from '@/pages/AdminMenu';
+import MainLayout from '@/components/Layout/MainLayout';
 import { Toaster } from '@/components/ui/sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -75,22 +78,24 @@ function App() {
             path="/login"
             element={
               isAuthenticated ? (
-                <Navigate to="/" replace />
+                <Navigate to="/dashboard" replace />
               ) : (
                 <LoginPage onLogin={handleLogin} />
               )
             }
           />
-          <Route
-            path="/"
-            element={
-              isAuthenticated ? (
-                <Dashboard user={user} onLogout={handleLogout} />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
+          
+          {isAuthenticated ? (
+            <Route element={<MainLayout user={user} onLogout={handleLogout} />}>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<DashboardNew />} />
+              <Route path="/documents" element={<DashboardNew />} />
+              <Route path="/admin/categories" element={<AdminCategories />} />
+              <Route path="/admin/menu" element={<AdminMenu />} />
+            </Route>
+          ) : (
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          )}
         </Routes>
       </BrowserRouter>
     </div>
