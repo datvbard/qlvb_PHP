@@ -1,0 +1,207 @@
+========================================
+HƯỚNG DẪN UPLOAD NHANH LÊN CPANEL
+Domain: qlvb.phongkhcn.vn
+========================================
+
+📦 PACKAGE NÀY ĐÃ BUILD SẴN - KHÔNG CẦN NPM BUILD!
+
+========================================
+BƯỚC 1: IMPORT DATABASE
+========================================
+
+1. Đăng nhập cPanel
+2. Vào "MySQL® Databases"
+3. Tạo database mới: qlvb_db
+4. Tạo user: qlvb_user (+ password)
+5. Thêm user vào database với ALL PRIVILEGES
+6. Vào "phpMyAdmin"
+7. Chọn database qlvb_db
+8. Tab "Import"
+9. Chọn file: database.sql
+10. Click "Go"
+
+✅ Database sẵn sàng!
+
+========================================
+BƯỚC 2: UPLOAD FILES
+========================================
+
+1. Vào "File Manager" trong cPanel
+2. Navigate tới /public_html/
+3. XÓA HẾT files cũ trong /public_html/ (nếu có)
+4. Upload TẤT CẢ files và folders từ package này:
+   
+   ✅ index.html
+   ✅ asset-manifest.json
+   ✅ .htaccess
+   ✅ api/ (folder - 9 files bên trong)
+   ✅ static/ (folder - js, css, media)
+
+5. Đảm bảo cấu trúc như sau:
+   /public_html/
+   ├── index.html
+   ├── .htaccess
+   ├── api/
+   │   ├── config.php
+   │   ├── auth.php
+   │   ├── categories.php
+   │   ├── menu.php
+   │   ├── documents.php
+   │   ├── files.php
+   │   ├── upload.php
+   │   ├── google_drive.php
+   │   └── .htaccess
+   └── static/
+       ├── js/
+       ├── css/
+       └── media/
+
+========================================
+BƯỚC 3: CẤU HÌNH DATABASE
+========================================
+
+1. File Manager > /public_html/api/config.php
+2. Click phải > Edit
+3. Tìm dòng:
+
+   define('DB_NAME', 'qlvb_db');
+   define('DB_USER', 'root');
+   define('DB_PASS', '');
+
+4. Đổi thành (CHÚ Ý PREFIX):
+
+   define('DB_NAME', 'username_qlvb_db');  // Thêm username_ ở đầu
+   define('DB_USER', 'username_qlvb_user'); // Thêm username_ ở đầu
+   define('DB_PASS', 'password_cua_ban');   // Password bạn đã tạo
+
+   VÍ DỤ: Nếu username cPanel là "mysite":
+   define('DB_NAME', 'mysite_qlvb_db');
+   define('DB_USER', 'mysite_qlvb_user');
+   define('DB_PASS', 'MyP@ssw0rd123');
+
+5. Tìm dòng JWT_SECRET và đổi thành string ngẫu nhiên:
+
+   define('JWT_SECRET', 'abc123xyz789-doi-thanh-chuoi-ngau-nhien');
+
+6. Click "Save Changes"
+
+========================================
+BƯỚC 4: SET PERMISSIONS
+========================================
+
+1. Chọn tất cả folders trong /public_html/
+2. Click "Permissions"
+3. Set: 755 (rwxr-xr-x)
+4. Check "Recurse into subdirectories"
+5. Click "Change Permissions"
+
+6. Chọn tất cả FILES (.php, .html, .htaccess)
+7. Set: 644 (rw-r--r--)
+
+========================================
+BƯỚC 5: TEST WEBSITE
+========================================
+
+1. Mở browser
+2. Truy cập: https://qlvb.phongkhcn.vn
+3. Trang login sẽ hiện ra
+4. Đăng nhập:
+   Username: admin
+   Password: admin123
+
+5. Test các chức năng:
+   ✅ Xem danh sách văn bản
+   ✅ Thêm văn bản mới
+   ✅ Sửa văn bản
+   ✅ Xóa văn bản
+   ✅ Xuất Excel
+   ✅ Quản lý danh mục (nếu là admin)
+
+========================================
+TROUBLESHOOTING - NẾU CÓ LỖI
+========================================
+
+❌ LỖI: 500 Internal Server Error
+✅ GIẢI QUYẾT:
+   - Check PHP version >= 7.4
+   - Check file .htaccess có đúng
+   - Xem error log: cPanel > Errors > Error Log
+
+❌ LỖI: Database connection failed
+✅ GIẢI QUYẾT:
+   - Kiểm tra lại DB_NAME, DB_USER, DB_PASS
+   - Nhớ thêm PREFIX username
+   - Verify user có ALL PRIVILEGES
+
+❌ LỖI: 404 Not Found
+✅ GIẢI QUYẾT:
+   - Check .htaccess đã upload
+   - Verify mod_rewrite enabled
+
+❌ LỖI: Cannot read property...
+✅ GIẢI QUYẾT:
+   - Clear browser cache (Ctrl + Shift + Delete)
+   - Hard refresh (Ctrl + F5)
+
+========================================
+BẢO MẬT - LÀM NGAY SAU KHI DEPLOY
+========================================
+
+🔒 1. Đổi password admin:
+   - Login vào hệ thống
+   - Vào phpMyAdmin
+   - Chọn bảng `users`
+   - Click Edit user admin
+   - Đổi password (sẽ tự động hash)
+
+🔒 2. Setup SSL Certificate:
+   - cPanel > SSL/TLS Status
+   - Install Let's Encrypt (free)
+
+🔒 3. Enable HTTPS redirect:
+   - Thêm vào .htaccess đầu file:
+   
+   RewriteCond %{HTTPS} off
+   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+========================================
+API TEST - KIỂM TRA API HOẠT ĐỘNG
+========================================
+
+Test bằng browser hoặc Postman:
+
+Login:
+POST https://qlvb.phongkhcn.vn/api/auth/login
+Body: {"username":"admin","password":"admin123"}
+
+Lấy danh mục:
+GET https://qlvb.phongkhcn.vn/api/categories
+Header: Authorization: Bearer [token từ login]
+
+========================================
+LIÊN HỆ HỖ TRỢ
+========================================
+
+Nếu vẫn gặp vấn đề:
+1. Check PHP error log
+2. Check browser console (F12)
+3. Screenshot lỗi
+4. Liên hệ hosting support
+
+========================================
+THÔNG TIN ĐĂNG NHẬP MẶC ĐỊNH
+========================================
+
+🔑 Username: admin
+🔑 Password: admin123
+
+⚠️ ĐỔI PASSWORD NGAY SAU KHI LOGIN!
+
+========================================
+✅ HOÀN TẤT - WEBSITE SẴN SÀNG!
+========================================
+
+Website: https://qlvb.phongkhcn.vn
+Admin Panel: https://qlvb.phongkhcn.vn/admin/categories
+
+Good luck! 🚀
