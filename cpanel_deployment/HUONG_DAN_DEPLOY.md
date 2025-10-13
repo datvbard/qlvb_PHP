@@ -77,6 +77,8 @@ UPDATE users SET password_hash = '$2y$10$[your_new_hash]' WHERE username = 'admi
 │       ├── menu.php
 │       ├── documents.php
 │       ├── files.php
+│       ├── upload.php
+│       ├── google_drive.php
 │       ├── .htaccess       # API htaccess
 │       └── google-credentials.json (optional)
 ├── logs/                    # Application logs
