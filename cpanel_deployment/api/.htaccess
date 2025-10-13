@@ -25,6 +25,8 @@ RewriteRule ^menu-items/(.*)$ menu.php/$1 [L,QSA]
 RewriteRule ^menu-items$ menu.php [L,QSA]
 
 # Route /api/documents/* to documents.php
+RewriteRule ^documents/([^/]+)/upload$ upload.php/$1 [L,QSA]
+RewriteRule ^documents/([^/]+)/files$ upload.php/$1 [L,QSA]
 RewriteRule ^documents/(.*)$ documents.php/$1 [L,QSA]
 RewriteRule ^documents$ documents.php [L,QSA]
 
