@@ -1,4 +1,16 @@
 # ===================================
+# PHP HANDLER CONFIGURATION
+# ===================================
+
+# Force PHP execution for .php files
+AddHandler application/x-httpd-php .php
+
+# Ensure PHP files are not downloaded
+<FilesMatch "\.php$">
+    SetHandler application/x-httpd-php
+</FilesMatch>
+
+# ===================================
 # URL REWRITING FOR API
 # ===================================
 
