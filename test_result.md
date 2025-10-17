@@ -101,3 +101,90 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: |
+  Ứng dụng quản lý văn bản đã được migrate sang cPanel với MySQL/PHP backend.
+  Hiện có 2 vấn đề cần fix:
+  1. PHP Handler: File PHP hiển thị mã nguồn thô thay vì execute
+  2. Google Drive Integration: Upload file thành công nhưng không xuất hiện trong folder, không xem/download được
+
+backend:
+  - task: "Fix PHP Handler - ensure PHP files execute instead of showing source code"
+    implemented: true
+    working: "pending_user_testing"
+    file: "/app/cpanel_deployment/api/.htaccess"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "pending_user_testing"
+        agent: "main"
+        comment: |
+          - Updated .htaccess with PHP handler directives (AddHandler application/x-httpd-php .php)
+          - Created comprehensive guide FIX_PHP_HANDLER.md with step-by-step instructions
+          - Guide includes:
+            * Configure PHP version in cPanel (8.0 or 8.1)
+            * Enable required PHP extensions
+            * Configure PHP handler settings
+            * Update .htaccess with proper directives
+            * Test files created (test-php.php, test-json.php)
+          - User needs to follow guide and test on their cPanel hosting
+  
+  - task: "Fix Google Drive Integration - upload, permissions, and file access"
+    implemented: true
+    working: "pending_user_testing"
+    file: "/app/cpanel_deployment/api/google_drive.php, /app/cpanel_deployment/api/config.php"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "pending_user_testing"
+        agent: "main"
+        comment: |
+          - Created test_google_drive.php for comprehensive testing
+          - Created FIX_GOOGLE_DRIVE.md with detailed troubleshooting guide
+          - Guide covers:
+            * Verify service account credentials
+            * Share Google Drive folder with service account email (EDITOR role)
+            * Install Google API PHP Client via composer or manual upload
+            * Configure config.php (GOOGLE_DRIVE_ENABLED, folder ID)
+            * Test suite checks: PHP version, credentials, folder access, API client
+            * Upload test file and verify in Google Drive
+            * File permissions settings for public access
+          - User needs to:
+            1. Share folder 1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0 with service account
+            2. Upload google-credentials.json to /public_html/api/
+            3. Install vendor/autoload.php (Google API Client)
+            4. Run test_google_drive.php to verify all components
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Fix PHP Handler on cPanel"
+    - "Fix Google Drive Integration"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: |
+      ✅ Đã tạo đầy đủ:
+      1. File test_google_drive.php - comprehensive test suite
+      2. FIX_PHP_HANDLER.md - hướng dẫn chi tiết fix PHP handler
+      3. FIX_GOOGLE_DRIVE.md - hướng dẫn chi tiết fix Google Drive
+      4. Cập nhật .htaccess với PHP handler directives
+      5. Package zip sẵn sàng upload: cpanel_upload_package.zip
+      
+      User cần làm:
+      1. Download package và upload lên cPanel
+      2. Làm theo FIX_PHP_HANDLER.md để fix PHP execution
+      3. Làm theo FIX_GOOGLE_DRIVE.md để cấu hình Google Drive
+      4. Test bằng các file test đã cung cấp
+      
+      Chờ user test và báo kết quả.
