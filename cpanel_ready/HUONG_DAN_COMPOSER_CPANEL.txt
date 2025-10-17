@@ -1,0 +1,335 @@
+╔════════════════════════════════════════════════════════════╗
+║   HƯỚNG DẪN CÀI GOOGLE API CLIENT QUA TERMINAL CPANEL    ║
+╚════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════
+BƯỚC 1: MỞ TERMINAL TRONG CPANEL
+═══════════════════════════════════════════════════════════
+
+1. Đăng nhập cPanel: https://qlvb.phongkhcn.vn:2083
+
+2. Tìm và click "Terminal" (hoặc "Terminal Access")
+   - Thường ở phần "Advanced" hoặc "Tools"
+   - Icon có dạng màn hình đen với dấu >
+
+3. Terminal sẽ mở ra trong trình duyệt
+   - Bạn sẽ thấy command prompt: [username@server ~]$
+
+✅ Terminal đã sẵn sàng!
+
+═══════════════════════════════════════════════════════════
+BƯỚC 2: KIỂM TRA COMPOSER ĐÃ CÓ CHƯA
+═══════════════════════════════════════════════════════════
+
+Trong Terminal, gõ:
+
+    composer --version
+
+KẾT QUẢ CÓ THỂ:
+
+A. Nếu thấy: "Composer version 2.x.x"
+   → ✅ Composer đã có sẵn, nhảy đến BƯỚC 3
+
+B. Nếu thấy: "command not found" 
+   → ⚠️ Cần cài Composer, làm theo BƯỚC 2B
+
+═══════════════════════════════════════════════════════════
+BƯỚC 2B: CÀI COMPOSER (NẾU CHƯA CÓ)
+═══════════════════════════════════════════════════════════
+
+Gõ từng lệnh sau (Enter sau mỗi lệnh):
+
+1. Download Composer:
+
+cd ~
+curl -sS https://getcomposer.org/installer | php
+
+2. Tạo alias để dùng:
+
+alias composer='php ~/composer.phar'
+
+3. Test lại:
+
+composer --version
+
+→ Nếu thấy version number → ✅ Thành công!
+
+═══════════════════════════════════════════════════════════
+BƯỚC 3: NAVIGATE ĐẾN FOLDER API
+═══════════════════════════════════════════════════════════
+
+Tìm đường dẫn đầy đủ tới folder api:
+
+1. Xác định username của bạn:
+
+pwd
+
+→ Sẽ hiện: /home/username
+
+2. Navigate tới folder api:
+
+cd ~/public_html/api
+
+3. Kiểm tra đã đúng folder:
+
+ls -la
+
+→ Phải thấy các file: config.php, auth.php, categories.php, ...
+
+✅ Đã ở đúng folder!
+
+═══════════════════════════════════════════════════════════
+BƯỚC 4: CÀI GOOGLE API CLIENT
+═══════════════════════════════════════════════════════════
+
+Gõ lệnh này (copy toàn bộ):
+
+composer require google/apiclient:"^2.0"
+
+QUÁ TRÌNH CÀI ĐẶT:
+
+1. Composer sẽ download packages
+2. Bạn sẽ thấy:
+   - "Loading composer repositories..."
+   - "Installing dependencies..."
+   - "Generating autoload files"
+   
+3. Đợi 1-2 phút
+
+4. Khi xong sẽ thấy:
+   - "Package operations: XX installs..."
+   - "Writing lock file"
+
+✅ Cài đặt hoàn tất!
+
+═══════════════════════════════════════════════════════════
+BƯỚC 5: KIỂM TRA ĐÃ CÀI XONG
+═══════════════════════════════════════════════════════════
+
+1. List các file/folder:
+
+ls -la
+
+→ Phải thấy folder mới: vendor/
+
+2. Kiểm tra vendor:
+
+ls -la vendor/
+
+→ Phải thấy: autoload.php, composer/, google/
+
+3. Kiểm tra Google API:
+
+ls -la vendor/google/
+
+→ Phải thấy: apiclient/, apiclient-services/
+
+✅ Google API Client đã được cài!
+
+═══════════════════════════════════════════════════════════
+BƯỚC 6: SET PERMISSIONS
+═══════════════════════════════════════════════════════════
+
+chmod -R 755 vendor/
+
+✅ Permissions đã được set!
+
+═══════════════════════════════════════════════════════════
+BƯỚC 7: TEST GOOGLE DRIVE
+═══════════════════════════════════════════════════════════
+
+1. Đóng Terminal
+
+2. Truy cập:
+   https://qlvb.phongkhcn.vn/api/test_google_drive.php
+
+3. Kiểm tra kết quả:
+   - Nếu thấy "✅ Google API Client library installed"
+   - Và "✅ Google_Client class available"
+   → THÀNH CÔNG!
+
+═══════════════════════════════════════════════════════════
+TÓM TẮT CÁC LỆNH (COPY TOÀN BỘ)
+═══════════════════════════════════════════════════════════
+
+# Kiểm tra composer
+composer --version
+
+# Nếu chưa có composer:
+cd ~
+curl -sS https://getcomposer.org/installer | php
+alias composer='php ~/composer.phar'
+
+# Navigate và cài đặt
+cd ~/public_html/api
+composer require google/apiclient:"^2.0"
+chmod -R 755 vendor/
+
+# Kiểm tra
+ls -la vendor/
+
+═══════════════════════════════════════════════════════════
+TROUBLESHOOTING - GIẢI QUYẾT LỖI
+═══════════════════════════════════════════════════════════
+
+❌ LỖI: "curl: command not found"
+✅ GIẢI QUYẾT:
+   wget -O composer-setup.php https://getcomposer.org/installer
+   php composer-setup.php
+   alias composer='php ~/composer.phar'
+
+❌ LỖI: "Could not find package google/apiclient"
+✅ GIẢI QUYẾT:
+   composer clear-cache
+   composer require google/apiclient:"^2.0"
+
+❌ LỖI: "Your requirements could not be resolved"
+✅ GIẢI QUYẾT:
+   # Thử version khác
+   composer require google/apiclient:"^2.12"
+
+❌ LỖI: "Permission denied"
+✅ GIẢI QUYẾT:
+   # Chắc chắn đang ở folder ~/public_html/api
+   pwd
+   cd ~/public_html/api
+   # Thử lại
+
+❌ LỖI: "PHP version too old"
+✅ GIẢI QUYẾT:
+   # Check PHP version
+   php -v
+   
+   # Nếu < 7.4, dùng PHP 8.0
+   /usr/bin/php80 ~/composer.phar require google/apiclient:"^2.0"
+
+❌ LỖI: "composer: command not found" (sau khi cài)
+✅ GIẢI QUYẾT:
+   # Dùng đường dẫn đầy đủ
+   php ~/composer.phar require google/apiclient:"^2.0"
+
+═══════════════════════════════════════════════════════════
+CÁCH ALTERNATIVE (NẾU TERMINAL KHÔNG HOẠT ĐỘNG)
+═══════════════════════════════════════════════════════════
+
+CÁCH A: SSH (Nếu hosting hỗ trợ)
+
+1. Download SSH client (PuTTY cho Windows)
+2. Kết nối: ssh username@qlvb.phongkhcn.vn
+3. Chạy các lệnh giống như Terminal
+
+CÁCH B: Yêu cầu Hosting Support
+
+1. Tạo ticket support
+2. Nội dung:
+
+   "Xin chào,
+   
+   Tôi cần cài đặt Google API PHP Client cho website.
+   Vui lòng chạy lệnh sau trong folder:
+   /home/[username]/public_html/api
+   
+   Lệnh:
+   composer require google/apiclient:^2.0
+   
+   Xin cảm ơn!"
+
+3. Họ sẽ chạy giúp bạn trong vòng vài giờ
+
+CÁCH C: Upload thư viện có sẵn
+
+1. Tôi sẽ tạo package vendor đã build sẵn
+2. Bạn chỉ cần download và upload lên server
+3. Xem file: VENDOR_PACKAGE.txt
+
+═══════════════════════════════════════════════════════════
+SAU KHI CÀI XONG
+═══════════════════════════════════════════════════════════
+
+✅ CHECKLIST:
+
+□ Folder vendor/ tồn tại trong /public_html/api/
+□ File vendor/autoload.php tồn tại
+□ Folder vendor/google/ tồn tại
+□ Test page: https://qlvb.phongkhcn.vn/api/test_google_drive.php
+□ Thấy "✅ Google API Client library installed"
+□ Thấy "✅ Google_Client class available"
+□ Có thể upload file trong website
+□ File xuất hiện trong Google Drive
+
+═══════════════════════════════════════════════════════════
+CẤU TRÚC FOLDER SAU KHI CÀI
+═══════════════════════════════════════════════════════════
+
+/public_html/api/
+├── vendor/                      ← Folder mới
+│   ├── autoload.php            ← Quan trọng
+│   ├── composer/
+│   ├── google/
+│   │   ├── apiclient/          ← Google API
+│   │   ├── apiclient-services/
+│   │   ├── auth/
+│   │   └── ...
+│   ├── firebase/
+│   ├── guzzlehttp/
+│   ├── monolog/
+│   └── ... (nhiều thư viện khác)
+├── composer.json               ← Composer config
+├── composer.lock               ← Composer lock
+├── config.php
+├── auth.php
+└── ... (các file API khác)
+
+═══════════════════════════════════════════════════════════
+SIZE THÔNG TIN
+═══════════════════════════════════════════════════════════
+
+Folder vendor/ sau khi cài:
+- Size: ~15-20 MB
+- Files: ~1000+ files
+- Folders: ~100+ folders
+
+Đây là bình thường vì bao gồm tất cả dependencies!
+
+═══════════════════════════════════════════════════════════
+TIPS
+═══════════════════════════════════════════════════════════
+
+💡 TIP 1: Giữ Terminal mở
+- Đừng đóng Terminal trong khi composer đang chạy
+- Nếu mất kết nối, chạy lại lệnh
+
+💡 TIP 2: Copy/Paste trong Terminal
+- Copy: Ctrl+C hoặc Ctrl+Insert
+- Paste: Ctrl+V hoặc Shift+Insert
+- Hoặc click chuột phải
+
+💡 TIP 3: Check tiến trình
+- Composer sẽ hiện progress bar
+- Nếu treo, đợi 5 phút trước khi cancel
+- Internet chậm có thể mất 5-10 phút
+
+💡 TIP 4: Nếu lỗi memory
+composer require google/apiclient:"^2.0" --no-dev
+
+(Bỏ dev dependencies để nhẹ hơn)
+
+═══════════════════════════════════════════════════════════
+VIDEO HƯỚNG DẪN (Nếu cần)
+═══════════════════════════════════════════════════════════
+
+Tìm trên YouTube:
+- "cPanel Terminal tutorial"
+- "Install Composer cPanel"
+- "cPanel SSH access"
+
+═══════════════════════════════════════════════════════════
+
+✅ HOÀN TẤT!
+
+Sau khi cài xong, test ngay:
+https://qlvb.phongkhcn.vn/api/test_google_drive.php
+
+Good luck! 🚀
+
+═══════════════════════════════════════════════════════════
