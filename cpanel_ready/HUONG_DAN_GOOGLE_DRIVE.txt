@@ -1,0 +1,377 @@
+╔════════════════════════════════════════════════════════════╗
+║     HƯỚNG DẪN CẤU HÌNH GOOGLE DRIVE UPLOAD                ║
+║     Folder ID: 1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0         ║
+║     Email: annguyenminhvbard@gmail.com                    ║
+╚════════════════════════════════════════════════════════════╝
+
+════════════════════════════════════════════════════════════
+BƯỚC 1: TẠO GOOGLE CLOUD PROJECT
+════════════════════════════════════════════════════════════
+
+1. Truy cập: https://console.cloud.google.com/
+
+2. Đăng nhập bằng email: annguyenminhvbard@gmail.com
+
+3. Click "Select a project" ở góc trên bên trái
+
+4. Click "NEW PROJECT"
+
+5. Điền thông tin:
+   Project name: Document-Management-System
+   Location: No organization
+   
+6. Click "CREATE"
+
+7. Đợi vài giây, project sẽ được tạo
+
+✅ Project đã sẵn sàng!
+
+════════════════════════════════════════════════════════════
+BƯỚC 2: ENABLE GOOGLE DRIVE API
+════════════════════════════════════════════════════════════
+
+1. Đảm bảo project "Document-Management-System" đang được chọn
+
+2. Vào menu (☰) > "APIs & Services" > "Library"
+   Hoặc: https://console.cloud.google.com/apis/library
+
+3. Tìm kiếm: "Google Drive API"
+
+4. Click vào "Google Drive API"
+
+5. Click "ENABLE"
+
+6. Đợi vài giây
+
+✅ Google Drive API đã được bật!
+
+════════════════════════════════════════════════════════════
+BƯỚC 3: TẠO SERVICE ACCOUNT
+════════════════════════════════════════════════════════════
+
+1. Vào menu (☰) > "APIs & Services" > "Credentials"
+   Hoặc: https://console.cloud.google.com/apis/credentials
+
+2. Click "CREATE CREDENTIALS" ở trên
+
+3. Chọn "Service account"
+
+4. Điền thông tin:
+   Service account name: doc-management-service
+   Service account ID: (tự động điền)
+   Service account description: Service for document upload
+   
+5. Click "CREATE AND CONTINUE"
+
+6. Grant this service account access to project:
+   Role: Chọn "Editor"
+   Click "CONTINUE"
+
+7. Grant users access (optional):
+   Bỏ qua, click "DONE"
+
+✅ Service Account đã được tạo!
+
+════════════════════════════════════════════════════════════
+BƯỚC 4: TẠO VÀ DOWNLOAD CREDENTIALS KEY
+════════════════════════════════════════════════════════════
+
+1. Trong trang Credentials, bạn sẽ thấy danh sách Service Accounts
+
+2. Click vào service account vừa tạo:
+   doc-management-service@...iam.gserviceaccount.com
+
+3. Click tab "KEYS" ở trên
+
+4. Click "ADD KEY" > "Create new key"
+
+5. Chọn key type: JSON
+
+6. Click "CREATE"
+
+7. File JSON sẽ tự động download về máy
+   Tên file dạng: document-management-system-xxxxx.json
+
+8. **QUAN TRỌNG:** 
+   - ĐỔI TÊN file thành: google-credentials.json
+   - LƯU FILE NÀY CẨN THẬN!
+
+✅ Credentials đã được download!
+
+════════════════════════════════════════════════════════════
+BƯỚC 5: LẤY SERVICE ACCOUNT EMAIL
+════════════════════════════════════════════════════════════
+
+1. Mở file google-credentials.json bằng Notepad
+
+2. Tìm dòng "client_email", sẽ giống như:
+   "client_email": "doc-management-service@document-management-system-xxxxx.iam.gserviceaccount.com"
+
+3. COPY email này (giữa dấu ngoặc kép)
+
+✅ Email đã sẵn sàng!
+
+════════════════════════════════════════════════════════════
+BƯỚC 6: SHARE GOOGLE DRIVE FOLDER VỚI SERVICE ACCOUNT
+════════════════════════════════════════════════════════════
+
+1. Truy cập Google Drive: https://drive.google.com/
+
+2. Đăng nhập bằng: annguyenminhvbard@gmail.com
+
+3. Tìm folder có ID: 1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+   
+   CÁCH TÌM:
+   - Nếu bạn biết tên folder, tìm trực tiếp
+   - Hoặc truy cập link:
+     https://drive.google.com/drive/folders/1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+
+4. Click chuột phải vào folder > "Share" (Chia sẻ)
+
+5. Trong ô "Add people and groups":
+   - Paste SERVICE ACCOUNT EMAIL vừa copy
+     (dạng: doc-management-service@...iam.gserviceaccount.com)
+
+6. Chọn quyền: "Editor" (Người chỉnh sửa)
+
+7. BỎ TICK "Notify people" (không cần gửi email)
+
+8. Click "Share" hoặc "Done"
+
+✅ Folder đã được share!
+
+════════════════════════════════════════════════════════════
+BƯỚC 7: UPLOAD CREDENTIALS LÊN CPANEL
+════════════════════════════════════════════════════════════
+
+1. Vào cPanel > File Manager
+
+2. Navigate tới: /public_html/api/
+
+3. Upload file: google-credentials.json
+   (File bạn đã đổi tên ở bước 4)
+
+4. Verify file đã upload:
+   - Thấy file google-credentials.json trong /public_html/api/
+   - Size khoảng 2-3 KB
+
+5. Set permissions:
+   - Click chuột phải > Permissions
+   - Set: 600 (rw-------)
+   - Click "Change Permissions"
+
+✅ Credentials đã upload!
+
+════════════════════════════════════════════════════════════
+BƯỚC 8: CẤU HÌNH CONFIG.PHP
+════════════════════════════════════════════════════════════
+
+1. File Manager > /public_html/api/config.php
+
+2. Click chuột phải > Edit
+
+3. Tìm các dòng này (khoảng dòng 30-33):
+
+   define('GOOGLE_DRIVE_ENABLED', false);
+   define('GOOGLE_CREDENTIALS_FILE', __DIR__ . '/google-credentials.json');
+   define('GOOGLE_DRIVE_FOLDER_ID', '');
+
+4. Đổi thành:
+
+   define('GOOGLE_DRIVE_ENABLED', true);
+   define('GOOGLE_CREDENTIALS_FILE', __DIR__ . '/google-credentials.json');
+   define('GOOGLE_DRIVE_FOLDER_ID', '1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0');
+
+5. Click "Save Changes"
+
+✅ Config đã được cập nhật!
+
+════════════════════════════════════════════════════════════
+BƯỚC 9: CÀI ĐẶT GOOGLE API PHP CLIENT
+════════════════════════════════════════════════════════════
+
+**QUAN TRỌNG:** Bạn cần cài đặt thư viện Google API PHP Client
+
+CÓ 2 CÁCH:
+
+-------------------
+CÁCH A: QUA SSH (Khuyến nghị nếu có SSH)
+-------------------
+
+1. Kết nối SSH tới server
+
+2. Chạy lệnh:
+   cd /home/username/public_html/api
+   composer require google/apiclient:"^2.0"
+
+3. Đợi cài đặt xong
+
+-------------------
+CÁCH B: UPLOAD THỦ CÔNG (Nếu không có SSH)
+-------------------
+
+1. Download thư viện từ:
+   https://github.com/googleapis/google-api-php-client/releases
+
+2. Tải file: google-api-php-client-x.x.x.zip
+
+3. Giải nén trên máy tính
+
+4. Upload folder "vendor" vào /public_html/api/
+
+5. Cấu trúc cuối cùng:
+   /public_html/api/vendor/
+   /public_html/api/vendor/autoload.php
+   /public_html/api/vendor/google/...
+
+-------------------
+CÁCH C: YÊU CẦU HOSTING SUPPORT
+-------------------
+
+1. Liên hệ hosting support
+
+2. Yêu cầu họ chạy:
+   "composer require google/apiclient:^2.0 trong folder /public_html/api/"
+
+3. Họ sẽ cài giúp bạn
+
+✅ Thư viện đã được cài!
+
+════════════════════════════════════════════════════════════
+BƯỚC 10: TEST UPLOAD
+════════════════════════════════════════════════════════════
+
+1. Truy cập website: https://qlvb.phongkhcn.vn
+
+2. Đăng nhập với admin / minhan
+
+3. Thêm văn bản mới hoặc chỉnh sửa văn bản cũ
+
+4. Trong form văn bản, kéo xuống phần "File đính kèm"
+
+5. Click hoặc kéo thả file vào
+
+6. Lưu văn bản
+
+7. Kiểm tra:
+   - Nếu thành công: Thấy file trong danh sách với link Google Drive
+   - Nếu lỗi: Check bước tiếp theo
+
+✅ Upload thành công!
+
+════════════════════════════════════════════════════════════
+TROUBLESHOOTING - GIẢI QUYẾT LỖI
+════════════════════════════════════════════════════════════
+
+❌ LỖI: "Google Drive not configured"
+✅ GIẢI QUYẾT:
+   - Check GOOGLE_DRIVE_ENABLED = true trong config.php
+   - Verify file google-credentials.json tồn tại
+   - Check GOOGLE_DRIVE_FOLDER_ID đúng
+
+❌ LỖI: "Class 'Google_Client' not found"
+✅ GIẢI QUYẾT:
+   - Chưa cài Google API PHP Client
+   - Làm lại BƯỚC 9
+   - Verify folder vendor/ tồn tại
+
+❌ LỖI: "Permission denied"
+✅ GIẢI QUYẾT:
+   - Check Service Account email đã được share folder
+   - Verify quyền là "Editor"
+   - Thử share lại folder
+
+❌ LỖI: "Invalid credentials"
+✅ GIẢI QUYẾT:
+   - File google-credentials.json bị sai
+   - Download lại key mới từ Google Cloud
+   - Upload lại
+
+❌ FILE UPLOAD NHƯNG KHÔNG THẤY TRONG DRIVE
+✅ GIẢI QUYẾT:
+   - Check folder ID có đúng không
+   - Vào Drive với email annguyenminhvbard@gmail.com
+   - Tìm folder shared với Service Account
+   - File sẽ nằm ở đó
+
+════════════════════════════════════════════════════════════
+KIỂM TRA FILE ĐÃ UPLOAD VÀO DRIVE
+════════════════════════════════════════════════════════════
+
+1. Truy cập Google Drive: https://drive.google.com/
+
+2. Đăng nhập: annguyenminhvbard@gmail.com
+
+3. Vào folder: 
+   https://drive.google.com/drive/folders/1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+
+4. Bạn sẽ thấy files đã upload từ website
+
+5. Click vào file để xem/download
+
+════════════════════════════════════════════════════════════
+BẢO MẬT
+════════════════════════════════════════════════════════════
+
+🔒 File google-credentials.json:
+   - Đừng share file này với ai
+   - Set permissions 600
+   - .htaccess đã bảo vệ không cho download
+
+🔒 Service Account:
+   - Chỉ có quyền truy cập folder được share
+   - Không thể truy cập folder khác
+   - Không thể xóa Google Account chính
+
+🔒 Folder Drive:
+   - Chỉ admin và Service Account có quyền
+   - Files sẽ thuộc về account annguyenminhvbard@gmail.com
+
+════════════════════════════════════════════════════════════
+TÓM TẮT THÔNG TIN
+════════════════════════════════════════════════════════════
+
+Google Drive Folder ID: 
+1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+
+Google Account:
+annguyenminhvbard@gmail.com
+
+Service Account Email:
+doc-management-service@[project-id].iam.gserviceaccount.com
+(Lấy từ file google-credentials.json)
+
+Project Name:
+Document-Management-System
+
+Config trong config.php:
+- GOOGLE_DRIVE_ENABLED: true
+- GOOGLE_CREDENTIALS_FILE: đường dẫn đến JSON
+- GOOGLE_DRIVE_FOLDER_ID: 1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+
+════════════════════════════════════════════════════════════
+LINK QUAN TRỌNG
+════════════════════════════════════════════════════════════
+
+Google Cloud Console:
+https://console.cloud.google.com/
+
+Google Drive Folder:
+https://drive.google.com/drive/folders/1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+
+Google API Library:
+https://console.cloud.google.com/apis/library
+
+Credentials:
+https://console.cloud.google.com/apis/credentials
+
+════════════════════════════════════════════════════════════
+
+✅ HOÀN TẤT CẤU HÌNH!
+
+Sau khi làm xong 10 bước trên, website sẽ upload files lên
+Google Drive folder của bạn tự động!
+
+Good luck! 🚀
+
+════════════════════════════════════════════════════════════
