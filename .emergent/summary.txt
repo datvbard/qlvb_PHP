@@ -1,0 +1,68 @@
+<analysis>
+The previous AI engineer successfully developed a full-stack document management application. Initially, it was built using FastAPI, React, and MongoDB, implementing core features like JWT authentication, CRUD operations for documents, search, filter, expiry alerts, and Excel export. During this phase, critical bugs related to bcrypt password hashing and frontend CSS styling for dashboard stats were identified and fixed.
+
+Subsequently, the user requested significant enhancements, including dynamic document categories, an admin menu, and Google Drive integration for file uploads. The engineer updated the backend to support these features and initiated frontend changes for a new layout with a sidebar and admin pages.
+
+A major pivot occurred when the user requested a complete migration of the application to a cPanel-compatible stack: MySQL and PHP for the backend, while keeping React for the frontend (built for static hosting). The engineer executed this by rewriting the backend in PHP, creating a MySQL schema, providing cPanel deployment instructions, and generating a pre-built frontend package. The current interaction focuses on post-deployment troubleshooting, specifically fixing login issues due to incorrect password hashing in MySQL and resolving PHP handler and Google Drive upload problems on the cPanel hosting.
+</analysis>
+
+<product_requirements>
+The user requested a document management web application (based on an image, later fully prompted) with core functionalities: JWT authentication (login/register), comprehensive CRUD for documents, document search, filtering by type, expiry alerts, and Excel export. The UI should be functional, beautiful, and responsive, adhering to modern design guidelines (Shadcn UI, Tailwind CSS, specific color palette with Burgundy as primary). After initial build, the user requested enhancements: dynamic document categories (professional, party documents managed by admin), an admin menu with configurable items, and Google Drive integration for file uploads (multiple files per document). A major shift in requirements then occurred: the application needed to be migrated to a cPanel-compatible stack using MySQL for the database and PHP for the backend API, while retaining the React frontend. Post-migration, the user sought assistance with login failures after manual password updates and issues with PHP file execution and Google Drive uploads.
+</product_requirements>
+
+<key_technical_concepts>
+- **Frontend**: React 19, Tailwind CSS, Shadcn/UI, Axios, React Router DOM v7, date-fns, Sonner, React Hook Form, Lucide React.
+- **Backend (Original)**: FastAPI, MongoDB (Motor), JWT (PyJWT), Bcrypt, Pandas, OpenPyXL, Starlette CORS Middleware.
+- **Backend (Migrated)**: PHP, MySQL, Composer, Google Drive API (PHP Client).
+- **Deployment**: cPanel hosting, .htaccess for URL rewriting.
+- **Security**: JWT authentication, bcrypt password hashing.
+</key_technical_concepts>
+
+<code_architecture>
+The application initially followed a standard full-stack architecture:
+- : FastAPI application () interacting with MongoDB.
+- : React application (, , , ).
+- MongoDB (, , ,  collections).
+
+**Initial Directory Structure:**
+
+
+**Key Files and Changes (Initial Build & Feature Additions):**
+- : Main FastAPI application. Initially implemented auth, CRUD, search, filter, stats, Excel export. Later heavily refactored for categories, admin menu, Google Drive integration. Significant changes include switching from  to direct  for password hashing and adding  to documents.
+- : Stores , , . Later updated to include , .
+- : Main React component. Initially handled basic routing. Later updated for the new  with sidebar and dynamic routing for admin pages.
+- : Global Tailwind CSS styles. Updated to include custom burgundy color variables and utility classes.
+- : Tailwind configuration. Updated to extend theme with custom burgundy colors for gradients.
+- : Dashboard page. Fixed CSS issue with stats cards (white text on white background) by explicitly defining text colors. Later replaced by  to integrate dynamic categories.
+- : New file for Google Drive API interactions (created during feature enhancement phase).
+- , : New components to structure the frontend with a navigation sidebar (created during feature enhancement phase).
+- , : New admin pages for managing categories and menu items (created during feature enhancement phase).
+
+**Migrated Architecture (cPanel/MySQL/PHP):**
+A new directory  was created for the PHP backend and deployment artifacts.
+
+- : MySQL schema for , , , ,  tables.
+- : Central configuration for MySQL database connection.
+- : Handles user registration, login, and JWT token generation/validation for PHP backend.
+- : CRUD operations for documents, search, filter, stats, and Excel export (rewritten in PHP).
+- : Handles file-related operations.
+- : PHP logic for interacting with Google Drive API.
+- : Handles file uploads to Google Drive via PHP.
+- : Apache rewrite rules for clean URLs and routing API requests in PHP.
+- : Configuration for the React frontend build targeting the cPanel deployment URL.
+
+</code_architecture>
+
+<pending_tasks>
+- Fix PHP handler issue on cPanel hosting where PHP files are displayed as raw code instead of being executed.
+- Debug and fix Google Drive upload functionality, as uploaded files are not appearing in the designated Google Drive folder.
+- Ensure uploaded files are viewable and downloadable after fixing Google Drive integration.
+</pending_tasks>
+
+<current_work>
+Immediately before this summary request, the user reported post-deployment issues on their cPanel hosting for the migrated PHP/MySQL application. Specifically, when accessing , the browser displayed the raw PHP code instead of executing it. Furthermore, a test upload appeared to succeed, but the file was not found in the specified Google Drive folder (), and files uploaded were not viewable/downloadable. The AI engineer has identified these as two distinct problems: incorrect PHP handler configuration on the cPanel server and a potential issue with the Google Drive integration setup itself. The current work is focused on addressing the first issue, FIX PHP HANDLER, before proceeding to debug the Google Drive upload failures.
+</current_work>
+
+<optional_next_step>
+The next step is to fix the PHP handler issue on the cPanel hosting.
+</optional_next_step>
