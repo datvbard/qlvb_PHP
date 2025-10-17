@@ -1,30 +1,3 @@
-#!/bin/bash
-
-# ===================================
-# PACKAGE FILES FOR CPANEL UPLOAD
-# ===================================
-
-echo "🚀 Packaging files for cPanel upload..."
-
-# Create package directory
-PACKAGE_DIR="/app/cpanel_deployment/cpanel_upload_package"
-rm -rf $PACKAGE_DIR
-mkdir -p $PACKAGE_DIR/api
-
-# Copy API files
-echo "📦 Copying API files..."
-cp /app/cpanel_deployment/api/*.php $PACKAGE_DIR/api/
-cp /app/cpanel_deployment/api/.htaccess $PACKAGE_DIR/api/
-
-# Copy documentation
-echo "📄 Copying documentation..."
-cp /app/cpanel_deployment/FIX_PHP_HANDLER.md $PACKAGE_DIR/
-cp /app/cpanel_deployment/FIX_GOOGLE_DRIVE.md $PACKAGE_DIR/
-cp /app/cpanel_deployment/HUONG_DAN_DEPLOY.md $PACKAGE_DIR/
-cp /app/cpanel_deployment/database.sql $PACKAGE_DIR/
-
-# Create README
-cat > $PACKAGE_DIR/README.md << 'EOF'
 # 📦 PACKAGE UPLOAD CPANEL - QLVB System
 
 ## 📋 Nội dung package này:
@@ -81,22 +54,3 @@ Nếu gặp vấn đề, kiểm tra:
 ---
 
 **Chúc bạn deploy thành công! 🎉**
-EOF
-
-# Create zip file
-echo "🗜️  Creating zip file..."
-cd $PACKAGE_DIR/..
-zip -r cpanel_upload_package.zip cpanel_upload_package/
-
-echo "✅ Package created successfully!"
-echo "📍 Location: /app/cpanel_deployment/cpanel_upload_package.zip"
-echo ""
-echo "📦 Package includes:"
-echo "  - api/ (all PHP backend files with updated .htaccess)"
-echo "  - FIX_PHP_HANDLER.md (detailed PHP handler fix guide)"
-echo "  - FIX_GOOGLE_DRIVE.md (detailed Google Drive fix guide)"
-echo "  - HUONG_DAN_DEPLOY.md (full deployment guide)"
-echo "  - database.sql (database schema)"
-echo "  - README.md (quick start guide)"
-echo ""
-echo "🚀 Ready to upload to cPanel!"
