@@ -21,6 +21,8 @@ echo "📄 Copying documentation..."
 cp /app/cpanel_deployment/FIX_PHP_HANDLER.md $PACKAGE_DIR/
 cp /app/cpanel_deployment/FIX_GOOGLE_DRIVE.md $PACKAGE_DIR/
 cp /app/cpanel_deployment/HUONG_DAN_DEPLOY.md $PACKAGE_DIR/
+cp /app/cpanel_deployment/SUMMARY_SOLUTION.md $PACKAGE_DIR/
+cp /app/cpanel_deployment/CHECKLIST.md $PACKAGE_DIR/
 cp /app/cpanel_deployment/database.sql $PACKAGE_DIR/
 
 # Create README
