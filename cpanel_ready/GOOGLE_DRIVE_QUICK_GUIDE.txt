@@ -1,0 +1,86 @@
+═══════════════════════════════════════════════════════════
+  HƯỚNG DẪN NHANH - GOOGLE DRIVE UPLOAD
+  Folder ID: 1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+═══════════════════════════════════════════════════════════
+
+📋 10 BƯỚC NHANH:
+
+1️⃣  Tạo project Google Cloud
+    → https://console.cloud.google.com/
+
+2️⃣  Enable Google Drive API
+    → APIs & Services > Library > Search "Drive"
+
+3️⃣  Tạo Service Account
+    → APIs & Services > Credentials > Create > Service Account
+
+4️⃣  Download JSON key
+    → Click vào Service Account > Keys > Add Key > JSON
+    → Đổi tên file thành: google-credentials.json
+
+5️⃣  Copy Service Account Email
+    → Từ file JSON, tìm "client_email"
+
+6️⃣  Share Drive folder
+    → https://drive.google.com/drive/folders/1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+    → Share với Service Account Email
+    → Quyền: Editor
+
+7️⃣  Upload google-credentials.json
+    → cPanel File Manager
+    → /public_html/api/google-credentials.json
+    → Permissions: 600
+
+8️⃣  Edit config.php
+    → GOOGLE_DRIVE_ENABLED = true
+    → GOOGLE_DRIVE_FOLDER_ID = 1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+
+9️⃣  Cài Google API Client
+    → Via SSH: composer require google/apiclient
+    → Hoặc upload vendor/ manually
+    → Hoặc yêu cầu hosting support
+
+🔟 Test
+    → Upload test_google_drive.php
+    → Truy cập: https://qlvb.phongkhcn.vn/api/test_google_drive.php
+    → Xem tất cả checks PASS
+
+═══════════════════════════════════════════════════════════
+
+📂 FILES CẦN:
+
+✅ /public_html/api/google-credentials.json (từ Google Cloud)
+✅ /public_html/api/vendor/ (Google API Client)
+✅ /public_html/api/test_google_drive.php (để test)
+
+═══════════════════════════════════════════════════════════
+
+🔗 LINKS QUAN TRỌNG:
+
+Google Cloud Console:
+https://console.cloud.google.com/
+
+Your Drive Folder:
+https://drive.google.com/drive/folders/1OBWCc80JfExTWyUxx3W2I6ltY8CZILa0
+
+Test Page (sau khi upload):
+https://qlvb.phongkhcn.vn/api/test_google_drive.php
+
+═══════════════════════════════════════════════════════════
+
+⚠️  LƯU Ý:
+
+- Đọc HUONG_DAN_GOOGLE_DRIVE.txt để biết chi tiết từng bước
+- Service Account email phải được share folder với quyền Editor
+- File google-credentials.json phải đúng format JSON
+- Cần cài Google API PHP Client (bước 9)
+
+═══════════════════════════════════════════════════════════
+
+✅ SAU KHI HOÀN TẤT:
+
+- Upload file trong website sẽ tự động lên Drive
+- File sẽ có link Google Drive để view/download
+- Xóa file trong website sẽ xóa luôn trên Drive
+
+═══════════════════════════════════════════════════════════
