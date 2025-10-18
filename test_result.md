@@ -188,3 +188,33 @@ agent_communication:
       4. Test bằng các file test đã cung cấp
       
       Chờ user test và báo kết quả.
+  
+  - agent: "user"
+    message: |
+      Update từ user:
+      - Đã chọn PHP 8.2 trên cPanel ✅
+      - Đã bật Google Drive API ✅
+      - Đã upload backend và frontend
+      - Login thành công ✅
+      - Vấn đề: Dashboard bị trang trắng ❌
+  
+  - agent: "main"
+    message: |
+      ✅ Đã xác định vấn đề:
+      - Frontend cũ có backend URL sai (https://docvault-58.preview.emergentagent.com)
+      - Cần build lại với URL đúng: https://qlvb.phongkhcn.vn
+      
+      ✅ Đã hoàn thành:
+      1. Build frontend mới với backend URL đúng
+      2. Tạo package frontend_upload_package.zip (871KB)
+      3. Tạo hướng dẫn FIX_TRANG_TRANG_DASHBOARD.md
+      4. Bao gồm .htaccess cho React Router
+      
+      User cần làm:
+      1. Download frontend_upload_package.zip
+      2. Upload và ghi đè files cũ trong /public_html/
+      3. GIỮ NGUYÊN folder api/
+      4. Clear browser cache
+      5. Test lại Dashboard
+      
+      Chờ user upload và báo kết quả.
